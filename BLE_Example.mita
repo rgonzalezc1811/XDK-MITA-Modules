@@ -1,0 +1,78 @@
+/*
+ * BLE_Example.mita
+ *
+ * Send sensor data over BLE.
+ *
+ * Eclipse Mita: XDK Workbench v.3.5.0
+ *
+ * Check out more about HTTP MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#ble
+ *
+ * Install the APP on your phone:
+ * LightBlue (Recommended, the APP more complete is in iOS)
+ * BLE Scanner (You can use it, but limited functions)
+ *
+ * Useful hotkeys:
+ *     Ctrl + space
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup smartphone:BLE
+{
+	deviceName = "Devices-Name";
+	advertisingInterval = 1000;
+	macAddress = "FC-D6-BD-XX-XX-XX"; //XDK's BLE MAC Address
+	var temperature = int32_characteristic(UUID = 0xCAFD); //GATT identificator
+	var motion = bool_characteristic(UUID = 0xCAFC); //GATT identificator
+	var light = uint32_characteristic(UUID = 0xCAFE); //GATT identificator
+}
+
+setup environment
+{
+	power_mode = Normal;
+	temperature_oversampling = OVERSAMPLE_8X;
+}
+
+setup accelerometer
+{
+ 	range = Range_16G;
+ 	bandwidth = BW_7_81Hz;
+ 	any_motion_threshold = 100;
+}
+
+setup light
+{
+	manual_mode = true;
+	integration_time = MS_800;
+	high_brightness = false;
+}
+
+/* Actions */
+every button_one.pressed
+{
+ 	var temperatureValue = environment.temperature.read();
+ 	print(`Temperature[0\xCAFD]: ${temperatureValue} milliCelsius\n`);
+ 	smartphone.temperature.write(temperatureValue);
+}
+
+every accelerometer.any_motion
+{
+ 	print(`Motion detected! [0\xCAFC]\n`);
+	smartphone.motion.write(true);
+}
+
+every 5000 milliseconds
+{
+	var lightValue = light.intensity.read();
+	print(`Light intensity [0\xCAFE]: ${lightValue} milliLuxes\n`);
+	smartphone.light.write(lightValue);
+}
+
+every button_two.pressed
+{
+	print(`Motion noticed, status reset [0\xCAFC].\n`);
+	smartphone.motion.write(false);
+}

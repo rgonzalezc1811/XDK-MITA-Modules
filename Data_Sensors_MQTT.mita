@@ -21,8 +21,8 @@ var counterMotion = 0;
 /* Setup section */
 setup theNetwork:WLAN
 {
-	ssid = "BoschRoland"; //XDK_Workshops
-	authentication = Personal(psk = "RolandBosch2019"); //Bosch-Workshop-1
+	ssid = "Wifi-Name"; //XDK_Workshops
+	authentication = Personal(psk = "Wifi-Password"); //Bosch-Workshop-1
 	ipConfiguration = Dhcp();
 }
 
@@ -112,4 +112,4 @@ every 5000 milliseconds
 	var lightValue = light.intensity.read();
 	print(`Light intensity: ${lightValue} milliLuxes\n`);
 	broker.topicLight.write(`Light intensity: ${lightValue} milliLuxes\n`);
-} 
+}

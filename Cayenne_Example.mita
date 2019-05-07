@@ -34,7 +34,7 @@ setup cayenne:MQTT
 	clientId = "Cayenne-ClientID";
 	keepAliveInterval = 60;
 	cleanSession = true;
-	authentication = Login(username = "Cayenne-MQTT-Username", password = "99a96672cd310205dab3532ce68cc32eabbbe0e0");
+	authentication = Login(username = "Cayenne-MQTT-Username", password = "Cayenne-MQTT-Password");
 
 	var topicTemperature = topic("v1/Cayenne-MQTT-Username/things/Cayenne-ClientID/data/1", 0);
 	var topicLight = topic("v1/Cayenne-MQTT-Username/things/Cayenne-ClientID/data/2",0);

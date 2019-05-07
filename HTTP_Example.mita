@@ -1,0 +1,84 @@
+/*
+ * HTTP_Example.mita
+ *
+ * Send sensor data over HTTP; POST method.
+ *
+ * Eclipse Mita: XDK Workbench v.3.5.0
+ *
+ * Check out more about HTTP MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#rest-over-http
+ *
+ * Get public endpoint using private navigator (only works on Firefox) on:
+ * http://webhook.site/
+ *
+ * Useful hotkeys:
+ *     Ctrl + space
+ */
+
+package main;
+import platforms.xdk110;
+
+var counterMotion = 0;
+
+/* Setup section */
+setup light
+{
+	manual_mode = true;
+	integration_time = MS_800;
+	high_brightness = false;
+}
+
+setup environment
+{
+	power_mode = Normal;
+	temperature_oversampling = OVERSAMPLE_8X;
+}
+
+setup accelerometer
+{
+	range = Range_16G;
+	bandwidth = BW_7_81Hz;
+	any_motion_threshold = 500;
+}
+setup theNetwork: WLAN
+{
+	ssid = "Wifi-Name"; // XDK_Workshops
+	authentication = Personal(psk = "Wifi-Password"); // Bosch-Workshop-1
+	ipConfiguration = Dhcp();
+}
+
+setup httpBackEnd : HttpRestClient
+{
+	transport = theNetwork;
+	endpointBase = "http://webhook.site";
+	var posts = resource(endpoint = "/the_path_assigned",writeMethod = POST);
+}
+
+/* Actions */
+every 30 seconds
+{
+	var lightValue = light.intensity.read();
+	print(`Light intensity: ${lightValue} milliLuxes\n`);
+	httpBackEnd.posts.write(`Light intensity: ${lightValue} milliLuxes\n`);
+}
+
+every button_one.pressed
+{
+	var temperatureValue = environment.temperature.read();
+	print(`Temperature: ${temperatureValue} milliCelsius\n`);
+	httpBackEnd.posts.write(`Temperature: ${temperatureValue} milliCelsius\n`);
+}
+
+every accelerometer.any_motion
+{
+	counterMotion += 1;
+	print(`Motion counter: ${counterMotion}\n`);
+	httpBackEnd.posts.write(`Motion counter: ${counterMotion}\n`);
+
+	if(counterMotion >= 11)
+	{
+		counterMotion = 0;
+		print(`Motion counter set to zero!\n`);
+		httpBackEnd.posts.write(`Motion counter reset: ${counterMotion}\n`);
+	}
+}

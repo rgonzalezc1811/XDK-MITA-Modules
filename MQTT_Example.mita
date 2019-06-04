@@ -3,7 +3,7 @@
  *
  * Part 3: Wifi setup, connection to HiveMQ Broker and testing Publish messages.
  *
- * Eclipse Mita: XDK Workbench v.3.5.0
+ * Eclipse Mita: XDK Workbench v.3.6.0
  *
  * Check out more about MQTT over MITA on:
  * https://www.eclipse.org/mita/platforms/xdk110/#mqtt

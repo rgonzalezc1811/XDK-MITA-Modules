@@ -3,7 +3,7 @@
  *
  * Send sensor data over HTTP; POST method.
  *
- * Eclipse Mita: XDK Workbench v.3.5.0
+ * Eclipse Mita: XDK Workbench v.3.6.0
  *
  * Check out more about HTTP MITA on:
  * https://www.eclipse.org/mita/platforms/xdk110/#rest-over-http

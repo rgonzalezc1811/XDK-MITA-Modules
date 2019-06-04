@@ -1,0 +1,69 @@
+/*
+ * SDCard.mita
+ *
+ * SDCard Testing.
+ *
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ *
+ * Check out more about SD Card MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sd-card
+ * https://xdk.bosch-connectivity.com/release-notes-3.5.0
+ * https://xdk.bosch-connectivity.com/community/-/message_boards/message/529585
+ * https://xdk.bosch-connectivity.com/documents/37728/268274/XDK110_SD_Guide.pdf/4ee96511-709d-40d0-97ca-7d39b3af98b6
+ *
+ * Useful hotkeys:
+ *     Ctrl + space
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup hardMemory:SDCard
+{
+	var csvInit = rewindingTextWrite("log.csv");
+	var csv = appendingTextWrite("log.csv");
+}
+
+setup environment
+{
+	power_mode = Forced;
+	temperature_oversampling = OVERSAMPLE_16X;
+}
+
+setup accelerometer
+{
+ 	range = Range_16G;
+ 	bandwidth = BW_7_81Hz;
+}
+
+setup light
+{
+	manual_mode = true;
+	integration_time = MS_800;
+	high_brightness = false;
+}
+
+every XDK110.startup
+{
+	// this truncates the log file and writes the csv header
+	hardMemory.csvInit.write("acc_x_mg, acc_y_mg, acc_z_mg,temp_mc,light_ml\n");
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+	var accX = accelerometer.x_axis.read();
+	var accY = accelerometer.y_axis.read();
+	var accZ = accelerometer.z_axis.read();
+	var temp = environment.temperature.read();
+	var light = light.intensity.read();
+	
+	print(`Acceleration on X [mg]: ${accX}\n`);
+	print(`Acceleration on Y [mg]: ${accY}\n`);
+	print(`Acceleration on Z [mg]: ${accZ}\n`);
+	print(`Temperature [mCelsius]: ${temp}\n`);
+	print(`Light intensity [mlux]: ${light}\n`);
+	
+	hardMemory.csv.write(`${accX},${accY},${accZ},${temp},${light}\n`);	
+}

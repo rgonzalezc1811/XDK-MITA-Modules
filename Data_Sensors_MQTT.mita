@@ -3,7 +3,7 @@
  *
  * Part 4: Sensor data Publish messages on public broker HiveMQ.
  *
- * Eclipse Mita: XDK Workbench v.3.5.0
+ * Eclipse Mita: XDK Workbench v.3.6.0
  *
  * Check out more about MQTT protocol on:
  * https://www.hivemq.com/mqtt-essentials/

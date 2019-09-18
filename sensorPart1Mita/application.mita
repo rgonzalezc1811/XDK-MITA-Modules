@@ -1,7 +1,7 @@
 /*
- * Sensor_Example.mita
+ * sensorPart1Mita
  *
- * Part 1: Enable light sensor, introduction to "setup" and "every".
+ * Enable light sensor; introduction to "setup" and "every".
  *
  * Eclipse Mita: XDK Workbench v.3.6.0
  *

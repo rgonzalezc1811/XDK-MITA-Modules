@@ -1,5 +1,5 @@
 /*
- * BLE_Example.mita
+ * bleMita
  *
  * Send sensor data over BLE.
  *
@@ -22,12 +22,12 @@ import platforms.xdk110;
 /* Setup section */
 setup smartphone:BLE
 {
-	deviceName = "Devices-Name";
+	deviceName = "Dummy-Name";                                  //XDK's BLE name.
 	advertisingInterval = 1000;
-	macAddress = "FC-D6-BD-XX-XX-XX"; //XDK's BLE MAC Address
-	var temperature = int32_characteristic(UUID = 0xCAFD); //GATT identificator
-	var motion = bool_characteristic(UUID = 0xCAFC); //GATT identificator
-	var light = uint32_characteristic(UUID = 0xCAFE); //GATT identificator
+	macAddress = "FC-D6-BD-10-0E-B4";                           //XDK's BLE MAC Address. Example: "FC-D6-BD-10-0E-B4"
+	var temperature = int32_characteristic(UUID = 0xCAFD);      //GATT identificator.
+	var motion = bool_characteristic(UUID = 0xCAFC);            //GATT identificator.
+	var light = uint32_characteristic(UUID = 0xCAFE);           //GATT identificator.
 }
 
 setup environment
@@ -54,25 +54,25 @@ setup light
 every button_one.pressed
 {
  	var temperatureValue = environment.temperature.read();
- 	print(`Temperature[0\xCAFD]: ${temperatureValue} milliCelsius\n`);
+ 	print(`Temperature[Hex: CAFD]: ${temperatureValue} milliCelsius\n`);
  	smartphone.temperature.write(temperatureValue);
 }
 
 every accelerometer.any_motion
 {
- 	print(`Motion detected! [0\xCAFC]\n`);
+ 	print(`Motion detected! [Hex: CAFC]\n`);
 	smartphone.motion.write(true);
 }
 
 every 5000 milliseconds
 {
 	var lightValue = light.intensity.read();
-	print(`Light intensity [0\xCAFE]: ${lightValue} milliLuxes\n`);
+	print(`Light intensity [Hex: CAFE]: ${lightValue} milliLuxes\n`);
 	smartphone.light.write(lightValue);
 }
 
 every button_two.pressed
 {
-	print(`Motion noticed, status reset [0\xCAFC].\n`);
+	print(`Motion noticed, status reset [Hex: CAFC].\n`);
 	smartphone.motion.write(false);
 }

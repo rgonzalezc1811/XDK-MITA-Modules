@@ -1,0 +1,131 @@
+/*
+ * MQTT_Example.mita
+ *
+ * Wifi setup, connection to HiveMQ Broker and testing Publish messages; introduction to MQTT protocol.
+ *
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ *
+ * Check out more about MQTT over MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#mqtt
+ *
+ * HiveMQ web socket client:
+ * http://www.hivemq.com/demos/websocket-client/
+ * 
+ * Useful hotkeys:
+ *     Ctrl + space
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Global variables */
+var counterMotion = 0;
+
+/* Setup section */
+setup theNetwork:WLAN
+{
+	ssid = "Access_point_name";                               //Put the access point name here
+	authentication = Personal(psk = "Access_point_password"); //Put the access point password here
+	ipConfiguration = Dhcp();
+}
+
+setup broker:MQTT
+{
+	transport = theNetwork;
+	url = "mqtt://broker.mqttdashboard.com";
+	keepAliveInterval = 60;
+	cleanSession = true;
+
+    /*
+	 * Instructions to set the "clienId" variable "--_ddmmyy":
+	 *  ________ __________________________________
+	 * |        |                                  |
+	 * | --     | Your name and lastname initials  |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | _      | Only to separate the information |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | ddmmyy | Your  birthday                   |
+	 * |________|__________________________________|
+	 * 
+	 * Example: "My name is Rod Fring and I was born the 1° Octuber 1989"
+	 * 
+	 * So, the "clientId" is set as shown bellow:
+	 * 
+	 * clientId =  "RF_011089"
+	 */
+	clientId = "--_ddmmyy";
+	 
+    /*
+	 * Instructions to set the "custumTopic" variable "xdk_workshop_ddmmyy/web":
+	 *  _______________ _________________________________
+	 * |               |                                 |
+	 * | xdk_workshop_ | Remains as the same             |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | ddmmyy        | The workshop date or dummy date |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | /web          | Your  birthday                  |
+	 * |_______________|_________________________________|
+	 * 
+	 * Example: "The date I was testing this code was 12 September, 2019"
+	 * 
+	 * So, the "custumTopic" is set as shown bellow:
+	 * 
+	 * custumTopic =  "xdk_workshop_120919/web"
+	 */
+	var custumTopic = topic("xdk_workshop_ddmmyy/web",0);
+}
+
+setup environment
+{
+	power_mode = Normal;
+	temperature_oversampling = OVERSAMPLE_8X;
+}
+
+setup accelerometer
+{
+ 	range = Range_16G;
+ 	bandwidth = BW_7_81Hz;
+ 	any_motion_threshold = 100;
+}
+
+setup light
+{
+	manual_mode = true;
+	integration_time = MS_800;
+	high_brightness = false;
+}
+
+/* Actions */
+every button_two.pressed
+{
+	print(`Button 2 pressed!\n`);
+	broker.custumTopic.write(`Data send from XDK!\n`);
+}
+
+every button_one.pressed
+{
+ 	var temperatureValue = environment.temperature.read();
+ 	print(`Temperature: ${temperatureValue} milliCelsius\n`);
+}
+
+every accelerometer.any_motion
+{
+ 	counterMotion += 1;
+ 	print(`Motion counter: ${counterMotion}\n`);
+
+ 	if(counterMotion >= 10000)
+ 	{
+ 		counterMotion = 0;
+ 		print(`Motion counter set to zero!\n`);
+  }
+}
+
+every 5000 milliseconds
+{
+	var lightValue = light.intensity.read();
+	print(`Light intensity: ${lightValue} milliLuxes\n`);
+}

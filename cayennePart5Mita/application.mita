@@ -1,0 +1,205 @@
+/*
+ * cayennePart5Mita
+ *
+ * Data sensor send over publish messages to myDevices 
+ * Cayenne IoT platform using MQTT protocol and to the
+ * public broker HiveMQ web socket client.
+ *
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * 
+ * Check out more about MQTT protocol on:
+ * https://www.hivemq.com/mqtt-essentials/
+ * 
+ * HiveMQ web socket client on:
+ * http://www.hivemq.com/demos/websocket-client/
+ * 
+ * Check out more about Cayenne IoT platform and its MQTT API on:
+ * http://mydevices.com/cayenne/docs/cayenne-mqtt-api/
+ * 
+ * Create a Cayenne account to get the MQTT broker credentials on:
+ * https://cayenne.mydevices.com/
+ *
+ * Useful hotkeys:
+ *     Ctrl + space
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Global variables */
+var counterMotion = 0;
+
+/* Setup section */
+setup theNetwork:WLAN
+{
+	ssid = "Access_Point_Name";                               //Put the access point name here
+	authentication = Personal(psk = "Access_Point_Password"); //Put the access point password here
+	ipConfiguration = Dhcp();
+}
+
+setup cayenne:MQTT
+{
+	transport = theNetwork;
+	url = "mqtt://mqtt.mydevices.com";
+	keepAliveInterval = 60;
+	cleanSession = true;
+	
+	/*
+	 * Create a Cayenne account on https://cayenne.mydevices.com/
+	 * 
+	 * Once the account is validated, the credentials are available when a new device is registered:
+	 * 
+	 * 		- Your_Cayenne_ClientID
+	 *      - Your_Cayenne_Username 
+	 *      - Your_Cayenne_Password
+	 * 
+	 * Each topic is linked to a channel, that is why there is a number instead of data name:
+	 * 
+	 *      - 1 for temperature data
+	 *      - 2 for light data
+	 *      - 3 for motion data
+	 */
+	
+	clientId = "Your_Cayenne_ClientID"; 
+	authentication = Login(username = "Your_Cayenne_Username", password = "Your_Cayenne_Password");
+	var tempTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/1", 0);
+	var lightTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/2",0);
+	var motionTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/3",0);
+}
+
+setup broker:MQTT
+{
+	transport = theNetwork;
+	url = "mqtt://broker.mqttdashboard.com";
+	keepAliveInterval = 60;
+	cleanSession = true;
+	
+    /*
+	 * Instructions to set the "clienId" variable "--_ddmmyy":
+	 *  ________ __________________________________
+	 * |        |                                  |
+	 * | --     | Your name and lastname initials  |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | _      | Only to separate the information |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | ddmmyy | Your  birthday                   |
+	 * |________|__________________________________|
+	 * 
+	 * Example: "My name is Rod Fring and I was born the 1° Octuber 1989"
+	 * 
+	 * So, the "clientId" is set as shown bellow:
+	 * 
+	 * clientId =  "RF_011089"
+	 */
+	clientId = "---_ddmmyy";
+
+    /*
+	 * Instructions to set the "custumTopic" variable "xdk_workshop_ddmmyy/web":
+	 *  _______________ _________________________________
+	 * |               |                                 |
+	 * | xdk_workshop_ | Remains as the same             |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | ddmmyy        | The workshop date or dummy date |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | /web          | Your  birthday                  |
+	 * |_______________|_________________________________|
+	 * 
+	 * Example: "Te date I was testing this code was 12 September, 2019"
+	 * 
+	 * So, the "custumTopic" is set as shown bellow:
+	 * 
+	 * custumTopic =  "xdk_workshop_120919/web"
+	 */
+	var custumTopic = topic("xdk_workshop_ddmmyy/web",0);
+
+    /*
+	 * Instructions to set the data sensor topic variables "--_ddmmyy/dataSensor":
+	 *  _____________ __________________________________________________
+	 * |             |                                                  |
+	 * | --          | Your name and lastname initials                  |
+	 * |_____________|__________________________________________________|
+	 * |             |                                                  |
+	 * | _           | Only to separate the information                 |
+	 * |_____________|__________________________________________________|
+	 * |             |                                                  |
+	 * | ddmmyy      | Your  birthday                                   |
+	 * |_____________|__________________________________________________|
+	 * |             |                                                  |
+	 * | /dataSensor | Topic to send data, options: light, temp, motion |
+	 * |_____________|__________________________________________________|
+	 * 
+     * Example: "My name is Rod Fring and I was born the 1° Octuber 1989"
+	 * 
+	 * So, the data sensor topic variables are set as shown bellow:
+	 * 
+	 * lightTopic = "RF_011089/light"
+	 * tempTopic = "RF_011089/temp"
+	 * motionTopic = "RF_011089/motion"
+	 */
+	var lightTopic = topic("--_ddmmyy/light",0);
+	var tempTopic = topic("--_ddmmyy/temp",0);
+	var motionTopic = topic("--_ddmmyy/motion",0);
+}
+
+setup environment
+{
+	power_mode = Normal;
+	temperature_oversampling = OVERSAMPLE_8X;
+}
+
+setup accelerometer
+{
+ 	range = Range_16G;
+ 	bandwidth = BW_7_81Hz;
+ 	any_motion_threshold = 100;
+}
+
+setup light
+{
+	manual_mode = true;
+	integration_time = MS_800;
+	high_brightness = false;
+}
+
+/* Actions */
+every button_two.pressed
+{
+	print(`Data send from XDK!\n`);
+	broker.custumTopic.write(`Data send from XDK!\n`);
+}
+
+every button_one.pressed
+{
+ 	var tempValue = environment.temperature.read();
+ 	print(`Temperature: ${tempValue} milliCelsius\n`);
+ 	broker.tempTopic.write(`Temperature: ${tempValue} milliCelsius\n`);
+ 	cayenne.tempTopic.write(`${tempValue}\n`);
+}
+
+every accelerometer.any_motion
+{
+ 	counterMotion += 1;
+ 	print(`Motion counter: ${counterMotion}\n`);
+	broker.motionTopic.write(`Motion counter: ${counterMotion}\n`);
+	cayenne.motionTopic.write(`${counterMotion}\n`);
+
+ 	if(counterMotion >= 11)
+ 	{
+ 		counterMotion = 0;
+		print(`Motion counter set to zero!\n`);
+ 		cayenne.motionTopic.write(`${counterMotion}\n`);
+ 		broker.motionTopic.write(`Motion counter restart: ${counterMotion}\n`);
+  	}
+}
+
+every 5000 milliseconds
+{
+	var lightValue = light.intensity.read();
+	print(`Light intensity: ${lightValue} milliLuxes\n`);
+	broker.lightTopic.write(`Light intensity: ${lightValue} milliLuxes\n`);
+	cayenne.lightTopic.write(`${lightValue}\n`);
+}

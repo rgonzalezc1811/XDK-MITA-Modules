@@ -2,7 +2,7 @@
  * Eclipse Mita: XDK Workbench v.3.6.0
  * Author: rolando.gonzalez@mx.bosch.com
  * 
- * Description: Use og light sensor (MAX44009) on MITA for XDK.
+ * Description: Use of light sensor (MAX44009) on MITA for XDK.
  * 
  * 
  * Check out more about sensors on:
@@ -28,15 +28,30 @@ setup light
 }
 
 /* Actions */
-
-/* Other options on 'every': 
- *     hour, hours,
- *     minute, minutes, 
- *     second, seconds,
- *     millisecond, milliseconds 
- */
 every 1000 milliseconds
 {
     var lightValue = light.intensity.read();
-    print(`Light intensity: ${lightValue} milliluxes\n`);
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
 }
+
+every button_one.pressed
+{
+    var lightValue = light.intensity.read();
+    
+    print(`Button one pressed:`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var lightValue = light.intensity.read();
+    
+    print(`Button two pressed:`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
+}
+

@@ -1,8 +1,4 @@
 # Ignore next extension files #
-
 .metadata/
 .settings/
 src-gen/
-
-# Ignore the C projects on this branch #
-*C/

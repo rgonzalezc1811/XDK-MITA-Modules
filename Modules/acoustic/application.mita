@@ -1,0 +1,60 @@
+/* acoustic.mita: Example of acoustic sensor implementation.
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Description: Use of acoustic sensor (AKU340) on MITA for XDK, the
+ * sensor can measure milli Volts change vs aire pressure caused by air 
+ * pressure (sound).
+ * 
+ * Warning: The acoustic sensor on MITA can work together other sensors.
+ * 
+ * 
+ * Check out more about sensors on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a 
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup noise_sensor
+{
+    samplingFrequency = 22050;
+    timeout = 800;
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var noise_value = noise_sensor.noise.read();
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Noise: ${noise_value} mV\r\n`);
+    print(`.\r\n`);
+}
+
+every button_one.pressed
+{
+    var noise_value = noise_sensor.noise.read();
+    
+    print(`Button one pressed:\r\n`);
+    print(`Noise: ${noise_value} mV\r\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var noise_value = noise_sensor.noise.read();
+    // TODO: Convert mV values to dB.
+    
+    print(`Button two pressed:\r\n`);
+    print(`Noise: ${noise_value} mV\r\n`);
+    print(`.\r\n`);
+}

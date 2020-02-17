@@ -1,0 +1,57 @@
+/* light.mita: Example of light sensor.
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Description: Use of light sensor (MAX44009) on MITA for XDK.
+ * 
+ * 
+ * Check out more about sensors on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a description
+ *       or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup light
+{
+    manual_mode = true;
+    integration_time = MS_800;
+    high_brightness = false;
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var lightValue = light.intensity.read();
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
+}
+
+every button_one.pressed
+{
+    var lightValue = light.intensity.read();
+    
+    print(`Button one pressed:`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var lightValue = light.intensity.read();
+    
+    print(`Button two pressed:`);
+    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`.\r\n`);
+}
+

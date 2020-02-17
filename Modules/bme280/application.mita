@@ -1,0 +1,65 @@
+/* bme280.mita: Example of environmental sensor.
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Description: Use of environmental sensor (BME280) on MITA for XDK, the
+ * sensor can measure temperature, pressure and relative humidity.
+ * 
+ * 
+ * Check out more about sensors on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a description
+ *       or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup environment
+{
+    power_mode = Normal;
+    standby_time = 500; //ms
+    temperature_oversampling = OVERSAMPLE_16X;
+    pressure_oversampling = OVERSAMPLE_16X;
+    humidity_oversampling = OVERSAMPLE_16X;
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var temp_value = environment.temperature.read();
+    var pres_value = environment.pressure.read();
+    var humd_value = environment.humidity.read();
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Temperature: ${temp_value} mC\r\n`);
+    print(`Pressure: ${pres_value} Pa\r\n`);
+    print(`Relative humidity: ${humd_value} %RH\r\n`);
+    print(`.\r\n`);
+}
+
+every button_one.pressed
+{
+    var temp_value = environment.temperature.read();
+    var pres_value = environment.pressure.read();
+    
+    print(`Button one pressed:\r\n`);
+    print(`Temperature: ${temp_value} mC\r\n`);
+    print(`Pressure: ${pres_value} Pa\r\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var humd_value = environment.humidity.read();
+    
+    print(`Button two pressed:\r\n`);
+    print(`Relative humidity: ${humd_value} %RH\r\n`);
+    print(`.\r\n`);
+}

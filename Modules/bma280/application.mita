@@ -1,0 +1,87 @@
+/* bma280.mita: Example of acceleration sensor.
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Description: Use of accelerometer sensor (BMA280) on MITA for XDK, the
+ * sensor can measure acceleration changes on axis "x", "y" and "z".
+ * 
+ * 
+ * Check out more about sensors on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+// Change this value by selected range, example if "range" is configured at
+// "Range_4G" the set "range_in_milli_g" to 4000 
+var range_in_milli_g = 16000;
+
+/* Setup section */
+setup accelerometer
+{
+    bandwidth = BW_7_81Hz;
+    range = Range_16G;
+    // This is the ADC format in 14-bit signed integer, no mg.
+    // 2G range is equal to 8192 ADC counts and 1G maps to 4095 and so on.
+    any_motion_threshold = 6000;
+    //no_motion_threshold = 6000;
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var acc_x_value = accelerometer.x_axis.read();
+    var acc_y_value = accelerometer.y_axis.read();
+    var acc_z_value = accelerometer.z_axis.read();
+    
+    //Convert LSB values to mg
+    acc_x_value = acc_x_value*range_in_milli_g/8191;
+    acc_y_value = acc_y_value*range_in_milli_g/8191;
+    acc_z_value = acc_z_value*range_in_milli_g/8191;
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Acceleration "x": ${acc_x_value} mg\r\n`);
+    print(`Acceleration "y": ${acc_y_value} mg\r\n`);
+    print(`Acceleration "z": ${acc_z_value} mg\r\n`);
+    print(`.\r\n`);
+}
+
+every button_one.pressed
+{
+    var acc_magnitude_value = accelerometer.magnitude.read();
+    
+    //Convert LSB values to mg
+    acc_magnitude_value = acc_magnitude_value*range_in_milli_g/8191;
+    
+    print(`Button one pressed:\r\n`);
+    print(`Acceleration magnitud value: ${acc_magnitude_value} mg\r\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var acc_magnitude_value = accelerometer.magnitude.read();
+    
+    //Convert LSB values to mg
+   acc_magnitude_value = acc_magnitude_value*range_in_milli_g/8191;
+    
+    print(`Button two pressed:\r\n`);
+    print(`Acceleration magnitud value: ${acc_magnitude_value} mg\r\n`);
+    print(`.\r\n`);
+}
+
+// Accelerometer has other events to try, use Ctrl + Space after "every" to
+// explore them.
+every accelerometer.any_motion
+{
+    print(`Motion detected!\r\n`);
+    print(`.\r\n`);
+}

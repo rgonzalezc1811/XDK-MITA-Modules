@@ -1,0 +1,60 @@
+/* bmi160.mita: Example of gyroscope sensor on BMI160.
+ * Eclipse Mita: XDK Workbench v.3.6.0
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Description: Use of gyroscope sensor (BMI160) on MITA for XDK, the
+ * sensor can measure angular rate [°/s] on axis "x", "y" and "z" with 16-bit
+ * resolution.
+ * 
+ * Check out more about sensors on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup Gyroscope_BMI160
+{
+    bandwidth = BW_10_7Hz;
+    range = Range_2000s;
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var gyr_x_value = Gyroscope_BMI160.x_axis.read();
+    var gyr_y_value = Gyroscope_BMI160.y_axis.read();
+    var gyr_z_value = Gyroscope_BMI160.z_axis.read();
+    
+    print(`Printing timing measurements:\r\n`);
+    print(`Angular rate "x": ${gyr_x_value} deg/s\r\n`);
+    print(`Angular rate "y": ${gyr_y_value} deg/s\r\n`);
+    print(`Angular rate "z": ${gyr_z_value} deg/s\r\n`);
+    print(`.\r\n`);
+}
+
+every button_one.pressed
+{
+    var gyr_x_value = Gyroscope_BMI160.x_axis.read();
+    
+    print(`Button one pressed:\r\n`);
+    print(`Angular rate "x": ${gyr_x_value} deg/s\r\n`);
+    print(`.\r\n`);
+}
+
+every button_two.pressed
+{
+    var gyr_y_value = Gyroscope_BMI160.y_axis.read();
+    
+    print(`Button one pressed:\r\n`);
+    print(`Angular rate "y": ${gyr_y_value} deg/s\r\n`);
+    print(`.\r\n`);
+}

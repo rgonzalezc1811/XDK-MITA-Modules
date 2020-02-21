@@ -1,19 +1,21 @@
-/*
- * bleMita
- *
- * Send sensor data over BLE.
- *
- * Eclipse Mita: XDK Workbench v.3.6.0
- *
+/* ble.mita: Example of sending sensor data over BLE.
+ * Eclipse Mita: XDK Workbench v.3.6.1
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
  * Check out more about HTTP MITA on:
  * https://www.eclipse.org/mita/platforms/xdk110/#ble
+ * https://developer.bosch.com/web/xdk/bluetooth-low-energy-ble-1
  *
- * Install the APP on your phone:
- * LightBlue (Recommended, the APP more complete is in iOS)
+ * Install the APP on your phone to receive the raw data:
+ * LightBlue (Recommended, the APP is stabler on iOS)
  * BLE Scanner (You can use it, but limited functions)
  *
- * Useful hotkeys:
- *     Ctrl + space
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a 
+ *       description or explanation of function or parameter.
  */
 
 package main;
@@ -24,7 +26,7 @@ setup smartphone:BLE
 {
 	deviceName = "Dummy-Name";                                  //XDK's BLE name.
 	advertisingInterval = 1000;
-	macAddress = "FC-D6-BD-10-0E-B4";                           //XDK's BLE MAC Address. Example: "FC-D6-BD-10-0E-B4"
+	macAddress = "FC-D6-BD-10-42-9B";                           //XDK's BLE MAC Address. Example: "FC-D6-BD-10-0E-B4"
 	var temperature = int32_characteristic(UUID = 0xCAFD);      //GATT identificator.
 	var motion = bool_characteristic(UUID = 0xCAFC);            //GATT identificator.
 	var light = uint32_characteristic(UUID = 0xCAFE);           //GATT identificator.

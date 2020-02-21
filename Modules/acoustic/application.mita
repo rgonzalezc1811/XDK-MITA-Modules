@@ -1,5 +1,5 @@
 /* acoustic.mita: Example of acoustic sensor implementation.
- * Eclipse Mita: XDK Workbench v.3.6.0
+ * Eclipse Mita: XDK Workbench v.3.6.1
  * Author: rolando.gonzalez@mx.bosch.com
  * 
  * Description: Use of acoustic sensor (AKU340) on MITA for XDK, the
@@ -9,8 +9,8 @@
  * Warning: The acoustic sensor on MITA can work together other sensors.
  * 
  * 
- * Check out more about sensors on:
- * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ * Check out more about noise sensor AKU340 on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#noise-sensor
  *
  * Useful hotkeys and functions:
  *     - Ctrl + space => Autocomplete MITA functions and parameters,

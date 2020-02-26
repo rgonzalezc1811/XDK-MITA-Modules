@@ -1,0 +1,131 @@
+/* mqtt.mita: Example of sending data over MQTT using HiveMQ broker.
+ * Eclipse Mita: XDK Workbench v.3.6.1
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * On the current example, a HiveMQ broker is used, it is a public broker and
+ * any person can access to it. 
+ * 
+ * On that page you must click on "Connect" and then subscribe to a new topic,
+ * use the topic created bellow in the current code and QoS as 0.
+ *
+ * You can access to HiveMQ broker web socket client using any web browser:
+ * http://www.hivemq.com/demos/websocket-client/
+ * 
+ * 
+ * Check out more about MQTT MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#mqtt
+ * https://developer.bosch.com/web/xdk/mqtt1
+ * 
+ * Checkout more abour HiveMQ and MQTT protocol on:
+ * http://www.mqtt-dashboard.com/
+ * https://www.hivemq.com/
+ * http://mqtt.org/documentation
+ *  
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a 
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Global variables */
+var seconds_counter = 0;
+
+/* Setup section */
+// Load your WLAN router credentials
+setup theNetwork:WLAN
+{
+    //Put the access point name here
+	ssid = "access_point_name";
+	
+	//Put the access point password here
+	authentication = Personal(psk = "access_point_password");
+	 
+	ipConfiguration = Dhcp();
+}
+
+setup broker:MQTT
+{
+	transport = theNetwork;
+	url = "mqtt://broker.mqttdashboard.com:1883";
+	keepAliveInterval = 60;
+	cleanSession = true;
+
+    /*
+	 * Instructions to set the "clienId" variable "--_ddmmyy".  
+	 *  ________ __________________________________
+	 * |        |                                  |
+	 * | --     | Your name and lastname initials  |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | _      | Only to separate the information |
+	 * |________|__________________________________|
+	 * |        |                                  |
+	 * | ddmmyy | Your  birthday                   |
+	 * |________|__________________________________|
+	 * 
+	 * Example: "My name is Rod Fring and I was born the 1° Octuber 1989"
+	 * 
+	 * So, the "clientId" is set as shown bellow:
+	 * 
+	 * clientId =  "RF_011089"
+	 * 
+	 * WARNING: This is only a suggestion to avoid create an User ID identical 
+     * to other device over MQTT broker. Keep on mind HiveMQ is a public broker
+     * and it is used by lots of people around the world, if you choose an 
+     * user ID and it is already taken by other device, your firmware will 
+     * break at running.
+	 */
+	clientId = "--_ddmmyy";
+	 
+    /*
+	 * Instructions to set the "custumTopic" to "xdk_workshop_ddmmyy/web":
+	 *  _______________ _________________________________
+	 * |               |                                 |
+	 * | xdk_workshop_ | Remains as the same             |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | ddmmyy        | The workshop date or dummy date |
+	 * |_______________|_________________________________|
+	 * |               |                                 |
+	 * | /web          | Your  birthday                  |
+	 * |_______________|_________________________________|
+	 * 
+	 * Example: "The date I was testing this code was 12 September, 2019"
+	 * 
+	 * So, the "custumTopic" is set as shown bellow:
+	 * 
+	 * custumTopic =  "xdk_workshop_120919/web"
+	 * 
+	 * WARNING: This is only a suggestion to avoid create a topic identical 
+     * to other current topics over MQTT broker. Keep on mind HiveMQ is a 
+     * public broker and it is used by lots of people around the world, if you
+     * choose a topic that already exists this topic will be receiving the XDK
+     * data and unknown data from other device or devices (noise).
+	 */
+	var custumTopic = topic("xdk_workshop_ddmmyy/web", 0);
+}
+
+/* Actions */
+every button_one.pressed
+{
+	print(`Button 1 pressed!\r\n`);
+	broker.custumTopic.write(`Button 1 pressed!\r\n`);
+}
+
+every button_two.pressed
+{
+ 	print(`Button 2 pressed!\r\n`);
+    broker.custumTopic.write(`Button 2 pressed!\r\n`);
+}
+
+every 5 seconds
+{
+	seconds_counter += 5;
+	print(`${seconds_counter} seconds since XDK booting\r\n`);
+    broker.custumTopic.write(`${seconds_counter} seconds until boot XDK\r\n`);
+}

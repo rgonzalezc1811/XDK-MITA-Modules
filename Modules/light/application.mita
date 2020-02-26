@@ -34,7 +34,7 @@ every 1000 milliseconds
     var lightValue = light.intensity.read();
     
     print(`Printing timing measurements:\r\n`);
-    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`Light intensity: ${lightValue} mlx\r\n`);
     print(`.\r\n`);
 }
 
@@ -43,7 +43,7 @@ every button_one.pressed
     var lightValue = light.intensity.read();
     
     print(`Button one pressed:`);
-    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`Light intensity: ${lightValue} mlx\r\n`);
     print(`.\r\n`);
 }
 
@@ -52,7 +52,7 @@ every button_two.pressed
     var lightValue = light.intensity.read();
     
     print(`Button two pressed:`);
-    print(`Light intensity: ${lightValue} mlx\n`);
+    print(`Light intensity: ${lightValue} mlx\r\n`);
     print(`.\r\n`);
 }
 

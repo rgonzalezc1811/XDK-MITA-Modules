@@ -1,5 +1,5 @@
 /* bma280.mita: Example of acceleration sensor.
- * Eclipse Mita: XDK Workbench v.3.6.0
+ * Eclipse Mita: XDK Workbench v.3.6.1
  * Author: rolando.gonzalez@mx.bosch.com
  * 
  * Description: Use of accelerometer sensor (BMA280) on MITA for XDK, the
@@ -7,7 +7,8 @@
  * 
  * 
  * Check out more about sensors on:
- * https://www.eclipse.org/mita/platforms/xdk110/#sensors-1
+ * https://www.eclipse.org/mita/platforms/xdk110/#accelerometer-bma280
+ * https://developer.bosch.com/web/xdk/accelerometer1
  *
  * Useful hotkeys and functions:
  *     - Ctrl + space => Autocomplete MITA functions and parameters,

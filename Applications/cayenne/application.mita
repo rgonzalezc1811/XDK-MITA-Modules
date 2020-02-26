@@ -1,0 +1,127 @@
+/* cayenne.mita: MQTT application using the IoT platform Cayenne.
+ * Eclipse Mita: XDK Workbench v.3.6.1
+ * Author: rolando.gonzalez@mx.bosch.com
+ *
+ * Data sensor send over publish messages to myDevices Cayenne IoT platform
+ * using MQTT protocol. 
+ *
+ * The project send light data every 5 seconds, temperature data every button 
+ * one is pushed, and motion notification every moment the acceleration
+ * threshold is reached and restart the counting at reaching 11 moments.
+ * 
+ * 
+ * Check out more about Cayenne IoT platform and its MQTT API on:
+ * http://mydevices.com/cayenne/docs/cayenne-mqtt-api/
+ *
+ * Create a Cayenne account to get the MQTT broker credentials on:
+ * https://cayenne.mydevices.com/
+ *
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a 
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Global variables */
+var counterMotion = 0; 
+
+/* Setup section */
+setup theNetwork:WLAN
+{
+    //Put the access point name here Access_Point_Name
+    ssid = "Access_Point_Name";
+    
+    //Put the access point password here Access_Point_Password
+    authentication = Personal(psk = "Access_Point_Password");
+    
+    ipConfiguration = Dhcp();
+}
+
+setup cayenne:MQTT
+{
+    transport = theNetwork;
+    url = "mqtt://mqtt.mydevices.com";
+    keepAliveInterval = 60;
+    cleanSession = true;
+    
+    /* Create a Cayenne account on https://cayenne.mydevices.com/
+     * 
+     * Once the account is validated, the credentials are available when a 
+     * new device is registered:
+     * 
+     *      - Your_Cayenne_ClientID: Client ID (Cayenne)
+     *      - Your_Cayenne_Username: MQTT Username (Cayenne)
+     *      - Your_Cayenne_Password: MQTT Password (Cayenne)
+     * 
+     * Each topic is linked to a channel, that is why there is a number instead of data name:
+     * 
+     *      - 1 for temperature data
+     *      - 2 for light data
+     *      - 3 for motion data
+     */
+
+    clientId = "Your_Cayenne_ClientID";
+    authentication = Login(username = "Your_Cayenne_Username", password = "Your_Cayenne_Password");
+    var tempTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/1", 0);
+    var lightTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/2", 0);
+    var motionTopic = topic("v1/Your_Cayenne_Username/things/Your_Cayenne_ClientID/data/3", 0);
+}
+
+setup environment
+{
+    power_mode = Normal;
+    temperature_oversampling = OVERSAMPLE_8X;
+}
+
+setup accelerometer
+{
+    range = Range_16G;
+    bandwidth = BW_7_81Hz;
+    any_motion_threshold = 100;
+}
+
+setup light
+{
+    manual_mode = true;
+    integration_time = MS_800;
+    high_brightness = false;
+}
+
+/* Actions */
+every button_two.pressed
+{
+    print(`Data send from XDK!\n`);
+}
+
+every button_one.pressed
+{
+    var tempValue = environment.temperature.read();
+    print(`Temperature: ${tempValue} milliCelsius\n`);
+    cayenne.tempTopic.write(`${tempValue}\n`);
+}
+
+every accelerometer.any_motion
+{
+    counterMotion += 1;
+    print(`Motion counter: ${counterMotion}\n`);
+    cayenne.motionTopic.write(`${counterMotion}\n`);
+
+    if(counterMotion >= 11)
+    {
+        counterMotion = 0;
+        print(`Motion counter set to zero!\n`);
+        cayenne.motionTopic.write(`${counterMotion}\n`);
+    }
+}
+
+every 5000 milliseconds
+{
+    var lightValue = light.intensity.read();
+    print(`Light intensity: ${lightValue} milliLuxes\n`);
+    cayenne.lightTopic.write(`${lightValue}\n`);
+}

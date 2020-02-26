@@ -18,7 +18,7 @@
 					<folderInfo id="com.bosch.cds.xdk.toolchain.704279065.531790607" name="/" resourcePath="">
 						<toolChain id="com.bosch.cds.xdk.toolchain.831376417" name="BCDS XDK Toolchain" superClass="com.bosch.cds.xdk.toolchain">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.bosch.cds.xdk.toolchain.targetplatform.913351793" isAbstract="false" osList="all" superClass="com.bosch.cds.xdk.toolchain.targetplatform"/>
-							<builder arguments="" autoBuildTarget="debug" buildPath="${workspace_loc:\eventsPart2Mita\src-gen}" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="com.bosch.cds.xdk.toolchain.builder.1798845056" incrementalBuildTarget="debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.bosch.cds.xdk.toolchain.builder"/>
+							<builder arguments="" autoBuildTarget="debug" buildPath="${workspace_loc:\http\src-gen}" cleanBuildTarget="clean" enableAutoBuild="false" enableCleanBuild="true" enabledIncrementalBuild="true" id="com.bosch.cds.xdk.toolchain.builder.1798845056" incrementalBuildTarget="debug" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.bosch.cds.xdk.toolchain.builder"/>
 							<tool id="com.bosch.cds.xdk.toolchain.c.1583863551" name="BCDS C Compiler" superClass="com.bosch.cds.xdk.toolchain.c">
 								<option id="gnu.c.compiler.option.include.paths.763632908" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ARM_GCC}/arm-none-eabi/include&quot;"/>
@@ -46,6 +46,7 @@
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Libraries/BLEStack/3rd-party/Alpwise/ALPW-BLESDKCM3/BLESW_CyclingSpeedAndCadence/Interfaces&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Libraries/FreeRTOS/3rd-party/include/private&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Common/config/LoRaDrivers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Libraries/WiFi/3rd-party/TI/examples/common&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Common/include/Connectivity&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Common/legacy/include/BLE&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${BCDS_BASE_DIR}/xdk110/Libraries/BLEStack/3rd-party/Alpwise/ALPW-BLESDKCM3/BLESW_WeightScale/Interfaces&quot;"/>
@@ -113,11 +114,13 @@
 									<listOptionValue builtIn="false" value="XDK_UTILITY_STORAGE=1"/>
 									<listOptionValue builtIn="false" value="XDK_MBEDTLS_PARSE_INFO=0"/>
 									<listOptionValue builtIn="false" value="XDK_SENSOR_EXTERNALSENSOR=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_PK_PARSE_C=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_XUDP=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_SNTP_CLIENT=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_LOG_LEVEL=SERVAL_LOG_LEVEL_ERROR"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_HTTP=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_XML_PARSER=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_ASN1_PARSE_C=1"/>
 									<listOptionValue builtIn="false" value="MBEDTLS_CONFIG_FILE=&lt;MbedtlsConfig.h&gt;"/>
 									<listOptionValue builtIn="false" value="SERVAL_MAX_SECURE_SOCKETS=5"/>
 									<listOptionValue builtIn="false" value="XDK_CONNECTIVITY_MQTT=1"/>
@@ -134,10 +137,12 @@
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_COAP_OBSERVE=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_XTCP=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_DTLS=0"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_GENPRIME=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_MQTT=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_REST_CLIENT=1"/>
 									<listOptionValue builtIn="false" value="XDK_CONNECTIVITY_HTTPRESTCLIENT=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_REST_SERVER=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_ENTROPY_C=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_XTCP_CLIENT=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_TLS=0"/>
 									<listOptionValue builtIn="false" value="SERVAL_MAX_SECURE_CONNECTIONS=5"/>
@@ -156,10 +161,14 @@
 									<listOptionValue builtIn="false" value="SERVAL_SECURITY_API_VERSION=2"/>
 									<listOptionValue builtIn="false" value="SERVAL_HTTP_MAX_LENGTH_URL=256"/>
 									<listOptionValue builtIn="false" value="XDK_SENSOR_SENSOR=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_BIGNUM_C=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_HTTP_AUTH=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_HTTP_RANGE_HANDLING=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_PK_C=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_LWM2M_SECURITY_INFO_MAX_LENGTH=65"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_APP_DATA_ACCESS=0"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_BASE64_C=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_RSA_C=1"/>
 									<listOptionValue builtIn="false" value="XDK_UTILITY_SNTP=1"/>
 									<listOptionValue builtIn="false" value="COAP_OVERLOAD_QUEUE_SIZE=15"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_DPWS=0"/>
@@ -174,6 +183,8 @@
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_DUTY_CYCLING=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_DTLS_PSK=0"/>
 									<listOptionValue builtIn="false" value="XDK_CONNECTIVITY_LWM2M=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_CTR_DRBG_C=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_MD_C=1"/>
 									<listOptionValue builtIn="false" value="BCDS_SERVALPAL_WIFI=1"/>
 									<listOptionValue builtIn="false" value="XDK_SENSOR_VIRTUALSENSOR=1"/>
 									<listOptionValue builtIn="false" value="XDK_CONNECTIVITY_WLAN=1"/>
@@ -183,18 +194,24 @@
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_TLS_CLIENT=0"/>
 									<listOptionValue builtIn="false" value="EFM32GG390F1024=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_DTLS_FLIGHT_MAX_RETRIES=4"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_OID_C=1"/>
 									<listOptionValue builtIn="false" value="__SL__=1"/>
 									<listOptionValue builtIn="false" value="BCDS_FREERTOS_INCLUDE_AWS=0"/>
 									<listOptionValue builtIn="false" value="SERVAL_SECURE_SERVER_CONNECTION_TIMEOUT=300000"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_NO_PLATFORM_ENTROPY=1"/>
 									<listOptionValue builtIn="false" value="BCDS_EMLIB_INCLUDE_USB=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_PEM_PARSE_C=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_AES_C=1"/>
 									<listOptionValue builtIn="false" value="DEFAULT_STARTUP=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_HTTP_SESSION_MONITOR_TIMEOUT=4000"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_HTTP_SERVER=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_SHA256_C=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_MAX_SIZE_APP_PACKET=600"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_WEBSERVER=1"/>
 									<listOptionValue builtIn="false" value="LWM2M_MAX_LENGTH_DEVICE_NAME=32"/>
 									<listOptionValue builtIn="false" value="XDK_SENSOR_BUTTON=1"/>
 									<listOptionValue builtIn="false" value="ENABLE_DMA=1"/>
+									<listOptionValue builtIn="false" value="MBEDTLS_PKCS1_V15=1"/>
 									<listOptionValue builtIn="false" value="__OSI__=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_ENABLE_HTTP_CLIENT=1"/>
 									<listOptionValue builtIn="false" value="SERVAL_DOWNGRADE_TLS=1"/>
@@ -230,7 +247,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="EclipseeventsPart2Mita.null.219994880" name="EclipseeventsPart2Mita"/>
+		<project id="Eclipsehttp.null.219994880" name="Eclipsehttp"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="scannerConfiguration">
@@ -242,7 +259,7 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/EclipseeventsPart2Mita"/>
+			<resource resourceType="PROJECT" workspacePath="/Eclipsehttp"/>
 		</configuration>
 	</storageModule>
 </cproject>

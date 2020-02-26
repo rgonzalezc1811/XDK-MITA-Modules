@@ -1,0 +1,68 @@
+/* sdcard.mita: Example of storing data as a CSV file into an SD Card.
+ * Eclipse Mita: XDK Workbench v.3.6.1
+ * Author: rolando.gonzalez@mx.bosch.com
+ * 
+ * Use only SD Cards between 2 GB to 32 GB and format FAT32.
+ * 
+ * The example stores the temperature and light data in milli celsius and milli
+ * luxes in the log.csv file.
+ * 
+ * Warning: The current project will overwrite the log.csv file on each XDK
+ * booting process.  
+ * 
+ * 
+ * Check out more about SD Card MITA on:
+ * https://www.eclipse.org/mita/platforms/xdk110/#sd-card
+ * https://xdk.bosch-connectivity.com/release-notes-3.5.0
+ * https://xdk.bosch-connectivity.com/community/-/message_boards/message/529585
+ * https://xdk.bosch-connectivity.com/documents/37728/268274/XDK110_SD_Guide.pdf/4ee96511-709d-40d0-97ca-7d39b3af98b6
+ *  
+ * Useful hotkeys and functions:
+ *     - Ctrl + space => Autocomplete MITA functions and parameters,
+ *       also display text help and descriptions.
+ * 
+ *     - Maintain mouse-pointer on function or parameter: Displays a 
+ *       description or explanation of function or parameter.
+ */
+
+package main;
+import platforms.xdk110;
+
+/* Setup section */
+setup hardMemory:SDCard
+{
+    var csvInit = rewindingTextWrite("log.csv");
+    var csv = appendingTextWrite("log.csv");
+}
+
+setup environment
+{
+    power_mode = Normal;
+    temperature_oversampling = OVERSAMPLE_16X;
+}
+
+setup light
+{
+    manual_mode = true;
+    integration_time = MS_800;
+    high_brightness = false;
+}
+
+every XDK110.startup
+{
+    // this truncates the log file and writes the csv header
+    hardMemory.csvInit.write("temp_mc,light_ml\r\n");
+}
+
+/* Actions */
+every 1000 milliseconds
+{
+    var temp = environment.temperature.read();
+    var light = light.intensity.read();
+    
+    print(`Temperature [mCelsius]: ${temp}\r\n`);
+    print(`Light intensity [mlux]: ${light}\r\n`);
+    print(`.\r\n`);
+    
+    hardMemory.csv.write(`${temp},${light}\r\n`); 
+}
